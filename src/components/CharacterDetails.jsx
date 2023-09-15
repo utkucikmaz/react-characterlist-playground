@@ -8,7 +8,7 @@ export default function CharacterDetails() {
 
     useEffect(() => {
         axios
-            .get("https://ih-crud-api.herokuapp.com/characters/" + characterId)
+            .get(`${import.meta.env.VITE_API_URL}/characters/${characterId}`)
             .then((response) => {
                 setCharacterDetail(response.data);
             })

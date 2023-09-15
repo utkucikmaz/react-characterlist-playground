@@ -7,13 +7,11 @@ import "./App.css";
 import CharacterDetails from "./components/CharacterDetails";
 
 function App() {
-    const baseURL = "https://ih-crud-api.herokuapp.com";
-
     const [characterList, setCharacterList] = useState(null);
 
     useEffect(() => {
         axios
-            .get(baseURL + "/characters")
+            .get(`${import.meta.env.VITE_API_URL}/characters`)
             .then((response) => {
                 setCharacterList(response.data);
             })
