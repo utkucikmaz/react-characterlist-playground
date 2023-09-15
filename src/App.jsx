@@ -10,21 +10,20 @@ function App() {
     const [characterList, setCharacterList] = useState(null);
 
     useEffect(() => {
+        getCharactersFromApi();
+    }, []);
+
+    const getCharactersFromApi = () => {
         axios
             .get(`${import.meta.env.VITE_API_URL}/characters`)
             .then((response) => {
                 setCharacterList(response.data);
             })
             .catch((e) => {
-                "Error:", e;
+                console.log("error getting characters from the API....", e);
             });
-    }, []);
-    const deleteChar = (charId) => {
-        const newList = characterList.filter((e) => {
-            return e.id !== charId;
-        });
-        setCharacterList(newList);
     };
+
     const renderList = () => {
         if (characterList === null) {
             return <p>loading....</p>;
@@ -40,14 +39,6 @@ function App() {
                         Details
                     </NavLink>
                     <br />
-                    <br />
-                    <button
-                        onClick={() => {
-                            deleteChar(characterObj.id);
-                        }}
-                    >
-                        Delete
-                    </button>
                     <br />
                 </div>
             );
@@ -67,7 +58,11 @@ function App() {
                 <Route path="/about" element={<About />} />
                 <Route
                     path="/characters/:characterId"
-                    element={<CharacterDetails />}
+                    element={
+                        <CharacterDetails
+                            callbackToUpdateCharacters={getCharactersFromApi}
+                        />
+                    }
                 />
                 <Route
                     path="*"
